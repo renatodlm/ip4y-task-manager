@@ -17,20 +17,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-center">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Total Tasks</h3>
-                        <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $task_count }}</p>
-                        <a href="{{ route('tasks.index') }}" class="mt-4 inline-block text-blue-500 hover:text-blue-700">View Tasks</a>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-center">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Total Projects</h3>
                         <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $project_count }}</p>
                         <a href="{{ route('projects.index') }}" class="mt-4 inline-block text-blue-500 hover:text-blue-700">View Projects</a>
                     </div>
                 </div>
 
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-center">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Total Tasks</h3>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $task_count }}</p>
+                        <a href="{{ route('tasks.index') }}" class="mt-4 inline-block text-blue-500 hover:text-blue-700">View Tasks</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
