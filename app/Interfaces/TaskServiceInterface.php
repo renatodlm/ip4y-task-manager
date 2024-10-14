@@ -11,6 +11,4 @@ interface TaskServiceInterface
     public function get_all_tasks();
     public function get_all_projects();
     public function get_all_users();
-    public function generate_task_report_excel();
-    public function generate_task_report_pdf();
 }

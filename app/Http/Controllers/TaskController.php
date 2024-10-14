@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
 use App\Interfaces\TaskServiceInterface;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Task;
+use Illuminate\Http\Request;
+use App\Exports\TasksExport;
 
 class TaskController extends Controller
 {
@@ -24,9 +29,32 @@ class TaskController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = $this->task_service->get_all_tasks();
+        $query = Task::query();
+
+        // Filtro por status
+        if ($request->has('status') && !empty($request->status))
+        {
+            $query->where('status', $request->status);
+        }
+
+        // Filtro por data de início
+        if ($request->has('start_date') && !empty($request->start_date))
+        {
+            $query->whereDate('due_date', '>=', $request->start_date);
+        }
+
+        // Filtro por data de fim
+        if ($request->has('end_date') && !empty($request->end_date))
+        {
+            $query->whereDate('due_date', '<=', $request->end_date);
+        }
+
+        // Executar a query e obter as tasks
+        $tasks = $query->get();
+
+        // Retornar a view com as tasks filtradas
         return view('tasks.index', compact('tasks'));
     }
 
@@ -82,6 +110,7 @@ class TaskController extends Controller
     public function edit($id)
     {
         $task = $this->task_service->get_task_by_id($id);
+
         return view('tasks.edit', [
             'task'     => $task,
             'projects' => $this->task_service->get_all_projects(),
@@ -111,26 +140,73 @@ class TaskController extends Controller
     public function destroy($id)
     {
         $this->task_service->delete_task($id);
+
         return redirect()->route('tasks.index')->with('success', 'Tarefa deletada com sucesso!');
     }
 
     /**
-     * Download the project report as PDF.
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * Download the task report as PDF.
      */
-    public function download_pdf()
+    public function download_pdf(Request $request)
     {
-        return $this->task_service->generate_task_report_pdf();
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $query = Task::query();
+
+        if ($request->has('status') && !empty($request->status))
+        {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('start_date'))
+        {
+            $query->whereDate('due_date', '>=', $request->start_date);
+        }
+
+        if ($request->has('end_date'))
+        {
+            $query->whereDate('due_date', '<=', $request->end_date);
+        }
+
+        $tasks = $query->get();
+
+        $pdf = Pdf::loadView('tasks.report', compact('tasks'));
+
+        return $pdf->download('task_report.pdf');
     }
 
     /**
-     * Download the project report as Excel.
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * Download the task report as Excel.
      */
-    public function download_excel()
+    public function download_excel(Request $request)
     {
-        return $this->task_service->generate_task_report_excel();
+        $request->validate([
+            'start_date' => ['required', 'date'],
+            'end_date'   => ['required', 'date', 'after_or_equal:start_date'],
+        ]);
+
+        $query = Task::query();
+
+        if ($request->has('status') && !empty($request->status))
+        {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('start_date'))
+        {
+            $query->whereDate('due_date', '>=', $request->start_date);
+        }
+
+        if ($request->has('end_date'))
+        {
+            $query->whereDate('due_date', '<=', $request->end_date);
+        }
+
+        $tasks = $query->get();
+
+        return Excel::download(new TasksExport($tasks), 'task_report.xlsx');
     }
 }

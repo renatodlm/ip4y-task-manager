@@ -8,9 +8,6 @@ use App\Models\User;
 use App\Notifications\TaskAssigned;
 use App\Interfaces\ProjectRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\TasksExport;
 
 class TaskService implements TaskServiceInterface
 {
@@ -103,7 +100,7 @@ class TaskService implements TaskServiceInterface
      */
     public function get_all_projects()
     {
-        return $this->task_repository->all();
+        return $this->project_repository->all();
     }
 
     /**
@@ -114,28 +111,5 @@ class TaskService implements TaskServiceInterface
     public function get_all_users()
     {
         return $this->user_repository->all();
-    }
-
-    /**
-     * Generate a PDF report of all tasks.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function generate_task_report_pdf()
-    {
-        $tasks = $this->task_repository->all();
-        $pdf   = Pdf::loadView('tasks.report', compact('tasks'));
-
-        return $pdf->download('task_report.pdf');
-    }
-
-    /**
-     * Generate an Excel report of all tasks.
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function generate_task_report_excel()
-    {
-        return Excel::download(new TasksExport, 'task_report.xlsx');
     }
 }
