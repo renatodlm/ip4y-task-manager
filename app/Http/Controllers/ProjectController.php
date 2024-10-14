@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
 use App\Interfaces\ProjectServiceInterface;
+use App\Models\Project;
 
 class ProjectController extends Controller
 {
@@ -105,5 +106,13 @@ class ProjectController extends Controller
     {
         $this->project_service->delete_project($id);
         return redirect()->route('projects.index')->with('success', 'Project successfully deleted!');
+    }
+
+    /**
+     * Total tasks count
+     */
+    public function count_projects()
+    {
+        return Project::count();
     }
 }

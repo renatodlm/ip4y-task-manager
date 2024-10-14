@@ -209,4 +209,12 @@ class TaskController extends Controller
 
         return Excel::download(new TasksExport($tasks), 'task_report.xlsx');
     }
+
+    /**
+     * Total tasks count
+     */
+    public function count_tasks()
+    {
+        return Task::count();
+    }
 }

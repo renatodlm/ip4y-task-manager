@@ -21,7 +21,10 @@ Route::get('/', WelcomeController::class);
 
 Route::get('/dashboard', function ()
 {
-    return view('dashboard');
+    $task_count    = app(TaskController::class)->count_tasks();
+    $project_count = app(ProjectController::class)->count_projects();
+
+    return view('dashboard', compact('task_count', 'project_count'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function ()
