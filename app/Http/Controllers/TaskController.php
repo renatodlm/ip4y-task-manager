@@ -33,28 +33,23 @@ class TaskController extends Controller
     {
         $query = Task::query();
 
-        // Filtro por status
         if ($request->has('status') && !empty($request->status))
         {
             $query->where('status', $request->status);
         }
 
-        // Filtro por data de início
         if ($request->has('start_date') && !empty($request->start_date))
         {
             $query->whereDate('due_date', '>=', $request->start_date);
         }
 
-        // Filtro por data de fim
         if ($request->has('end_date') && !empty($request->end_date))
         {
             $query->whereDate('due_date', '<=', $request->end_date);
         }
 
-        // Executar a query e obter as tasks
         $tasks = $query->get();
 
-        // Retornar a view com as tasks filtradas
         return view('tasks.index', compact('tasks'));
     }
 
