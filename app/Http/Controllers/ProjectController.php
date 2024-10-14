@@ -8,16 +8,16 @@ use App\Models\Project;
 
 class ProjectController extends Controller
 {
-    protected $project_service;
+    protected $ProjectService;
 
     /**
      * ProjectController constructor.
      *
-     * @param ProjectServiceInterface $project_service
+     * @param ProjectServiceInterface $ProjectService
      */
-    public function __construct(ProjectServiceInterface $project_service)
+    public function __construct(ProjectServiceInterface $ProjectService)
     {
-        $this->project_service = $project_service;
+        $this->ProjectService = $ProjectService;
     }
 
     /**
@@ -27,7 +27,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = $this->project_service->get_all_projects();
+        $projects = $this->ProjectService->get_all_projects();
         return view('projects.index', compact('projects'));
     }
 
@@ -49,7 +49,7 @@ class ProjectController extends Controller
      */
     public function store(ProjectRequest $request)
     {
-        $this->project_service->create_project($request->validated());
+        $this->ProjectService->create_project($request->validated());
         return redirect()->route('projects.index')->with('success', 'Project successfully created!');
     }
 
@@ -61,7 +61,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        $project = $this->project_service->get_project_by_id($id);
+        $project = $this->ProjectService->get_project_by_id($id);
 
         if (!$project)
         {
@@ -79,7 +79,7 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        $project = $this->project_service->get_project_by_id($id);
+        $project = $this->ProjectService->get_project_by_id($id);
         return view('projects.edit', compact('project'));
     }
 
@@ -92,7 +92,7 @@ class ProjectController extends Controller
      */
     public function update(ProjectRequest $request, $id)
     {
-        $this->project_service->update_project($id, $request->validated());
+        $this->ProjectService->update_project($id, $request->validated());
         return redirect()->route('projects.index')->with('success', 'Project successfully updated!');
     }
 
@@ -104,7 +104,7 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $this->project_service->delete_project($id);
+        $this->ProjectService->delete_project($id);
         return redirect()->route('projects.index')->with('success', 'Project successfully deleted!');
     }
 

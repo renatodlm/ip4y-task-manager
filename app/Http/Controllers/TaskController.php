@@ -12,16 +12,16 @@ use App\Exports\TasksExport;
 
 class TaskController extends Controller
 {
-    protected $task_service;
+    protected $TaskService;
 
     /**
      * Initialize the TaskController with the TaskServiceInterface.
      *
-     * @param TaskServiceInterface $task_service
+     * @param TaskServiceInterface $TaskService
      */
-    public function __construct(TaskServiceInterface $task_service)
+    public function __construct(TaskServiceInterface $TaskService)
     {
-        $this->task_service = $task_service;
+        $this->TaskService = $TaskService;
     }
 
     /**
@@ -61,8 +61,8 @@ class TaskController extends Controller
     public function create()
     {
         return view('tasks.create', [
-            'projects' => $this->task_service->get_all_projects(),
-            'users'    => $this->task_service->get_all_users(),
+            'projects' => $this->TaskService->get_all_projects(),
+            'users'    => $this->TaskService->get_all_users(),
         ]);
     }
 
@@ -74,7 +74,7 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        $this->task_service->create_task($request->validated());
+        $this->TaskService->create_task($request->validated());
         return redirect()->route('tasks.index')->with('success', 'Tarefa criada com sucesso!');
     }
 
@@ -86,7 +86,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        $task = $this->task_service->get_task_by_id((int) $id);
+        $task = $this->TaskService->get_task_by_id((int) $id);
 
         if (!$task)
         {
@@ -104,12 +104,12 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = $this->task_service->get_task_by_id($id);
+        $task = $this->TaskService->get_task_by_id($id);
 
         return view('tasks.edit', [
             'task'     => $task,
-            'projects' => $this->task_service->get_all_projects(),
-            'users'    => $this->task_service->get_all_users(),
+            'projects' => $this->TaskService->get_all_projects(),
+            'users'    => $this->TaskService->get_all_users(),
         ]);
     }
 
@@ -122,7 +122,7 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, $id)
     {
-        $this->task_service->update_task($id, $request->validated());
+        $this->TaskService->update_task($id, $request->validated());
         return redirect()->route('tasks.index')->with('success', 'Tarefa atualizada com sucesso!');
     }
 
@@ -134,7 +134,7 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $this->task_service->delete_task($id);
+        $this->TaskService->delete_task($id);
 
         return redirect()->route('tasks.index')->with('success', 'Tarefa deletada com sucesso!');
     }
