@@ -70,22 +70,22 @@ $statusLabels = [
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
                         @foreach($tasks as $task)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ $task->title }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                            <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
                                 {{ $task->project->title }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                            <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
                                 {{ $task->user->name }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ $statusLabels[$task->status] ?? $task->status }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {{ \Carbon\Carbon::parse($task->due_date)->format('m/d/Y') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <td class="px-6 py-4 text-sm font-medium">
                                 <a href="{{ route('tasks.show', $task->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-500 dark:hover:text-indigo-400">View</a>
                                 <a href="{{ route('tasks.edit', $task->id) }}" class="ml-4 text-yellow-600 hover:text-yellow-900 dark:text-yellow-500 dark:hover:text-yellow-400">Edit</a>
                                 <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="inline ml-4">
