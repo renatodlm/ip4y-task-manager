@@ -2,24 +2,21 @@
 
 namespace App\Services;
 
-use App\Exports\ProjectsExport;
 use App\Interfaces\ProjectRepositoryInterface;
 use App\Interfaces\ProjectServiceInterface;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectService implements ProjectServiceInterface
 {
-    protected $projectRepository;
+    protected $project_repository;
 
     /**
      * ProjectService constructor.
      *
-     * @param ProjectRepositoryInterface $projectRepository
+     * @param ProjectRepositoryInterface $project_repository
      */
-    public function __construct(ProjectRepositoryInterface $projectRepository)
+    public function __construct(ProjectRepositoryInterface $project_repository)
     {
-        $this->projectRepository = $projectRepository;
+        $this->project_repository = $project_repository;
     }
 
     /**
@@ -30,7 +27,7 @@ class ProjectService implements ProjectServiceInterface
      */
     public function create_project(array $data)
     {
-        return $this->projectRepository->create($data);
+        return $this->project_repository->create($data);
     }
 
     /**
@@ -42,7 +39,7 @@ class ProjectService implements ProjectServiceInterface
      */
     public function update_project(int $id, array $data)
     {
-        return $this->projectRepository->update($id, $data);
+        return $this->project_repository->update($id, $data);
     }
 
     /**
@@ -53,7 +50,7 @@ class ProjectService implements ProjectServiceInterface
      */
     public function delete_project(int $id)
     {
-        return $this->projectRepository->delete($id);
+        return $this->project_repository->delete($id);
     }
 
     /**
@@ -62,9 +59,9 @@ class ProjectService implements ProjectServiceInterface
      * @param int $id
      * @return mixed
      */
-    public function get_project_by_ID(int $id)
+    public function get_project_by_id(int $id)
     {
-        return $this->projectRepository->find($id);
+        return $this->project_repository->find($id);
     }
 
     /**
@@ -74,29 +71,6 @@ class ProjectService implements ProjectServiceInterface
      */
     public function get_all_projects()
     {
-        return $this->projectRepository->all();
-    }
-
-    /**
-     * Generate a PDF report of all projects.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function generate_project_report_pdf()
-    {
-        $projects = $this->projectRepository->all();
-        $pdf      = Pdf::loadView('projects.report', compact('projects'));
-
-        return $pdf->download('project_report.pdf');
-    }
-
-    /**
-     * Generate an Excel report of all projects.
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function generate_project_report_excel()
-    {
-        return Excel::download(new ProjectsExport, 'project_report.xlsx');
+        return $this->project_repository->all();
     }
 }

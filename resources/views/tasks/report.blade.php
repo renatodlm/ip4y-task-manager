@@ -8,12 +8,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($projects as $project)
-            <tr>
-                <td>{{ $project->id }}</td>
-                <td>{{ $project->title }}</td>
-                <td>{{ $project->due_date }}</td>
-            </tr>
+        @foreach($tasks as $task)
+        <tr>
+            <td>{{ $task->id }}</td>
+            <td>{{ $task->title }}</td>
+            <td>{{ $task->name }}</td>
+        </tr>
         @endforeach
     </tbody>
 </table>

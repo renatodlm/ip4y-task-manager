@@ -106,24 +106,4 @@ class ProjectController extends Controller
         $this->project_service->delete_project($id);
         return redirect()->route('projects.index')->with('success', 'Project successfully deleted!');
     }
-
-    /**
-     * Download the project report as PDF.
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function download_pdf()
-    {
-        return $this->project_service->generate_project_report_pdf();
-    }
-
-    /**
-     * Download the project report as Excel.
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function download_excel()
-    {
-        return $this->project_service->generate_project_report_excel();
-    }
 }

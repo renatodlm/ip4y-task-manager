@@ -8,19 +8,22 @@ use App\Models\User;
 use App\Notifications\TaskAssigned;
 use App\Interfaces\ProjectRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TasksExport;
 
 class TaskService implements TaskServiceInterface
 {
-    protected $taskRepository;
-    protected $projectRepository;
-    protected $userRepository;
+    protected $task_repository;
+    protected $project_repository;
+    protected $user_repository;
 
     /**
      * TaskService constructor.
      *
-     * @param TaskRepositoryInterface $taskRepository
-     * @param ProjectRepositoryInterface $projectRepository
-     * @param UserRepositoryInterface $userRepository
+     * @param TaskRepositoryInterface $task_repository
+     * @param ProjectRepositoryInterface $project_repository
+     * @param UserRepositoryInterface $user_repository
      */
     public function __construct(
         TaskRepositoryInterface $taskRepository,
@@ -28,9 +31,9 @@ class TaskService implements TaskServiceInterface
         UserRepositoryInterface $userRepository
     )
     {
-        $this->taskRepository    = $taskRepository;
-        $this->projectRepository = $projectRepository;
-        $this->userRepository    = $userRepository;
+        $this->task_repository    = $taskRepository;
+        $this->project_repository = $projectRepository;
+        $this->user_repository    = $userRepository;
     }
 
     /**
@@ -41,7 +44,7 @@ class TaskService implements TaskServiceInterface
      */
     public function create_task(array $data)
     {
-        $task = $this->taskRepository->create($data);
+        $task = $this->task_repository->create($data);
         $user = User::find($data['user_id']);
 
         $user->notify(new TaskAssigned($task));
@@ -50,7 +53,7 @@ class TaskService implements TaskServiceInterface
     }
 
     /**
-     * Update a task by ID.
+     * Update an existing task by ID.
      *
      * @param int $id
      * @param array $data
@@ -58,7 +61,7 @@ class TaskService implements TaskServiceInterface
      */
     public function update_task(int $id, array $data)
     {
-        return $this->taskRepository->update($id, $data);
+        return $this->task_repository->update($id, $data);
     }
 
     /**
@@ -69,7 +72,7 @@ class TaskService implements TaskServiceInterface
      */
     public function delete_task(int $id)
     {
-        return $this->taskRepository->delete($id);
+        return $this->task_repository->delete($id);
     }
 
     /**
@@ -80,7 +83,7 @@ class TaskService implements TaskServiceInterface
      */
     public function get_task_by_id(int $id)
     {
-        return $this->taskRepository->find($id);
+        return $this->task_repository->find($id);
     }
 
     /**
@@ -90,7 +93,7 @@ class TaskService implements TaskServiceInterface
      */
     public function get_all_tasks()
     {
-        return $this->taskRepository->all();
+        return $this->task_repository->all();
     }
 
     /**
@@ -100,7 +103,7 @@ class TaskService implements TaskServiceInterface
      */
     public function get_all_projects()
     {
-        return $this->projectRepository->all();
+        return $this->task_repository->all();
     }
 
     /**
@@ -110,6 +113,29 @@ class TaskService implements TaskServiceInterface
      */
     public function get_all_users()
     {
-        return $this->userRepository->all();
+        return $this->user_repository->all();
+    }
+
+    /**
+     * Generate a PDF report of all tasks.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generate_task_report_pdf()
+    {
+        $tasks = $this->task_repository->all();
+        $pdf   = Pdf::loadView('tasks.report', compact('tasks'));
+
+        return $pdf->download('task_report.pdf');
+    }
+
+    /**
+     * Generate an Excel report of all tasks.
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function generate_task_report_excel()
+    {
+        return Excel::download(new TasksExport, 'task_report.xlsx');
     }
 }

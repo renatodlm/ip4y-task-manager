@@ -31,11 +31,10 @@ Route::middleware('auth')->group(function ()
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/tasks', TaskController::class);
+    Route::get('/tasks/report/pdf', [TaskController::class, 'download_pdf'])->name('tasks.report.pdf');
+    Route::get('/tasks/report/excel', [TaskController::class, 'download_excel'])->name('tasks.report.excel');
 
     Route::resource('/projects', ProjectController::class);
-
-    Route::get('/projects/report/pdf', [ProjectController::class, 'download_PDF'])->name('projects.report.pdf');
-    Route::get('/projects/report/excel', [ProjectController::class, 'download_Excel'])->name('projects.report.excel');
 });
 
 require __DIR__ . '/auth.php';
