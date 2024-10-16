@@ -1,66 +1,234 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Projeto de Gerenciamento de Projetos e Tarefas - Laravel 11
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este é um sistema de gerenciamento de projetos e tarefas desenvolvido com Laravel 11. A aplicação segue os princípios SOLID, como "Responsabilidade Única" e "Inversão de Dependência", utilizando uma camada de serviços para lógica de negócios, repositórios para gerenciamento de dados, além de eventos e documentação gerada com Swagger. Os testes unitários foram implementados utilizando o Pest.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Instalação e Configuração
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Siga os passos abaixo para instalar e executar o projeto localmente.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Clonar o Repositório
 
-## Learning Laravel
+```bash
+git clone https://github.com/renatodlm/ip4y-task-manager
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2. Configurar o Ambiente
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Copie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente conforme necessário:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+cp .env.example .env
+```
 
-## Laravel Sponsors
+### 3. Instalar Dependências
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Instale as dependências do projeto utilizando o Composer:
 
-### Premium Partners
+```bash
+composer install
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 4. Gerar a Chave da Aplicação
 
-## Contributing
+Gere a chave da aplicação Laravel:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan key:generate
+```
 
-## Code of Conduct
+### 5. Configurar o Banco de Dados
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Atualize as variáveis de ambiente do banco de dados no arquivo `.env` e execute as migrações:
 
-## Security Vulnerabilities
+```bash
+php artisan migrate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 6. Executar a Aplicação
 
-## License
+Inicie o servidor local do Laravel:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan serve
+```
+
+Iniciar o Redis:
+
+```bash
+sudo service redis-server start
+redis-cli ping
+
+```
+
+---
+
+## Estrutura de Diretórios
+
+A estrutura do projeto está organizada de forma modular, facilitando a manutenção e escalabilidade. Abaixo estão os principais diretórios e seus respectivos arquivos:
+
+### `app/Http/Controllers/`
+
+-   **`ProjectController.php`**: Gerencia operações de criação, atualização, listagem e remoção de projetos.
+-   **`TaskController.php`**: Gerencia tarefas e suas atribuições a usuários, além de atualizações.
+
+### `app/Http/Requests/`
+
+-   **`ProjectRequest.php`**: Define as regras de validação para as operações relacionadas a projetos.
+-   **`TaskRequest.php`**: Define as regras de validação para operações com tarefas.
+
+### `app/Http/Resources/`
+
+-   **`ProjectResource.php`**: Formata os dados dos projetos para serem retornados como JSON.
+-   **`TaskResource.php`**: Formata os dados das tarefas em formato JSON.
+
+### `app/Interfaces/`
+
+-   **`ProjectServiceInterface.php`**: Define a interface para o serviço de gerenciamento de projetos.
+-   **`ProjectRepositoryInterface.php`**: Interface para o repositório de projetos.
+-   **`TaskServiceInterface.php`**: Interface para o serviço de gerenciamento de tarefas.
+-   **`TaskRepositoryInterface.php`**: Interface para o repositório de tarefas.
+
+### `app/Services/`
+
+-   **`ProjectService.php`**: Implementa a lógica de negócios relacionada a projetos.
+-   **`TaskService.php`**: Implementa a lógica de gerenciamento de tarefas, incluindo notificações.
+
+### `app/Repositories/`
+
+-   **`ProjectRepository.php`**: Lida com a persistência dos dados de projetos no banco de dados.
+-   **`TaskRepository.php`**: Gerencia a persistência de dados das tarefas no banco de dados.
+
+### `app/Models/`
+
+-   **`Project.php`**: Modelo que representa a entidade Projeto.
+-   **`Task.php`**: Modelo que representa a entidade Tarefa.
+
+---
+
+## Detalhes dos Serviços
+
+Os serviços no projeto seguem os princípios SOLID, em especial o princípio de "Inversão de Dependência", utilizando interfaces para garantir a abstração e independência da lógica de implementação dos repositórios. Aqui estão os principais serviços e suas responsabilidades:
+
+-   **`ProjectService.php`**: Controla a lógica de criação, atualização, listagem e remoção de projetos, assim como a geração de relatórios.
+-   **`TaskService.php`**: Gerencia as tarefas, incluindo a lógica de notificação para os usuários.
+
+---
+
+## Configuração do Pest
+
+O **Pest** é um framework de testes PHP simples e poderoso, que oferece uma sintaxe mais limpa do que outros frameworks tradicionais.
+
+### Passos para Instalar o Pest
+
+1. **Instalar o Pest via Composer**
+
+    Execute o comando abaixo para adicionar o Pest como dependência de desenvolvimento no Laravel:
+
+    ```bash
+    composer require pestphp/pest --dev
+    ```
+
+2. **Instalar o Pest para Laravel**
+
+    Após instalar o Pest, execute o seguinte comando para integrar o Pest ao Laravel:
+
+    ```bash
+    php artisan pest:install
+    ```
+
+    Esse comando irá configurar os diretórios de testes e gerar arquivos necessários para o funcionamento do Pest.
+
+3. **Executar os Testes com Pest**
+
+    Para rodar os testes, basta executar o seguinte comando:
+
+    ```bash
+    ./vendor/bin/pest
+    ```
+
+---
+
+## Testes com Pest
+
+Este projeto utiliza o **Pest** como framework para testes unitários. Ele oferece uma sintaxe mais fluida e simples para escrever e manter os testes.
+
+### Como Executar os Testes
+
+Para rodar todos os testes unitários, execute o seguinte comando:
+
+```bash
+./vendor/bin/pest
+```
+
+Os testes abrangem toda a lógica de negócios, garantindo que a aplicação funcione corretamente e que as principais funcionalidades, como a criação de projetos e tarefas, estejam validadas.
+
+---
+
+## Swagger para Documentação de API
+
+A documentação da API foi gerada utilizando **Swagger**, permitindo uma visualização clara dos endpoints disponíveis, juntamente com os parâmetros esperados e os formatos de resposta.
+
+---
+
+## Configuração do SQL Server no Docker
+
+Agora vamos configurar o SQL Server no Docker. Utilize o seguinte arquivo `docker-compose.yml` para configurar um contêiner SQL Server no Docker:
+
+```yaml
+version: "3.8"
+
+services:
+    sqlserver:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        container_name: sqlserver
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=\${SA_PASSWORD}
+        ports:
+            - "1433:1433"
+        networks:
+            - sqlserver-network
+        volumes:
+            - sqlserver-data:/var/opt/mssql
+
+networks:
+    sqlserver-network:
+
+volumes:
+    sqlserver-data:
+```
+
+### Passos para Configurar o SQL Server
+
+1. **Atualizar as Variáveis de Ambiente**
+
+    No seu arquivo `.env`, adicione a variável `SA_PASSWORD` com a senha para o administrador do SQL Server. Por exemplo:
+
+    ```bash
+    SA_PASSWORD=SeuPasswordSeguro123
+    ```
+
+2. **Subir o Contêiner do SQL Server**
+
+    Execute o comando abaixo para iniciar o SQL Server no Docker:
+
+    ```bash
+    docker-compose up -d
+    ```
+
+3. **Conectar o Laravel ao SQL Server**
+
+    Atualize as configurações de banco de dados no arquivo `.env` para utilizar o SQL Server:
+
+    ```bash
+    DB_CONNECTION=sqlsrv
+    DB_HOST=sqlserver
+    DB_PORT=1433
+    DB_DATABASE=nome_do_banco
+    DB_USERNAME=sa
+    DB_PASSWORD=\${SA_PASSWORD}
+    ```
+
+---
