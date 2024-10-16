@@ -10,6 +10,11 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Exports\TasksExport;
 
+/**
+ * @OA\PathItem(
+ *     path="/api/tasks"
+ * )
+ */
 class TaskController extends Controller
 {
     protected $TaskService;
@@ -25,9 +30,16 @@ class TaskController extends Controller
     }
 
     /**
-     * Display a listing of tasks.
-     *
-     * @return \Illuminate\View\View
+     * @OA\Get(
+     *     path="/api/tasks",
+     *     tags={"Tasks"},
+     *     summary="Obter todas as tarefas",
+     *     description="Retorna todas as tarefas registradas",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de tarefas retornada com sucesso"
+     *     )
+     * )
      */
     public function index(Request $request)
     {
@@ -67,10 +79,25 @@ class TaskController extends Controller
     }
 
     /**
-     * Store a newly created task in storage.
-     *
-     * @param  \App\Http\Requests\TaskRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @OA\Post(
+     *     path="/api/tasks",
+     *     tags={"Tasks"},
+     *     summary="Criar uma nova tarefa",
+     *     description="Cria uma nova tarefa",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="title", type="string", example="Nova Tarefa"),
+     *             @OA\Property(property="description", type="string", example="Descrição da tarefa"),
+     *             @OA\Property(property="project_id", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Tarefa criada com sucesso"
+     *     )
+     * )
      */
     public function store(TaskRequest $request)
     {

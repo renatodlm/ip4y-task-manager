@@ -6,6 +6,18 @@ use App\Http\Requests\ProjectRequest;
 use App\Interfaces\ProjectServiceInterface;
 use App\Models\Project;
 
+/**
+ * @OA\Info(
+ *     title="Gerenciamento de Projetos API",
+ *     version="1.0.0"
+ * )
+ */
+
+/**
+ * @OA\PathItem(
+ *     path="/api/projects"
+ * )
+ */
 class ProjectController extends Controller
 {
     protected $ProjectService;
@@ -21,9 +33,16 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display a listing of the projects.
-     *
-     * @return \Illuminate\View\View
+     * @OA\Get(
+     *     path="/api/projects",
+     *     tags={"Projects"},
+     *     summary="Obter todos os projetos",
+     *     description="Retorna todos os projetos registrados",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de projetos retornada com sucesso"
+     *     )
+     * )
      */
     public function index()
     {
@@ -42,10 +61,24 @@ class ProjectController extends Controller
     }
 
     /**
-     * Store a newly created project in storage.
-     *
-     * @param ProjectRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @OA\Post(
+     *     path="/api/projects",
+     *     tags={"Projects"},
+     *     summary="Criar um novo projeto",
+     *     description="Cria um novo projeto",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Novo Projeto"),
+     *             @OA\Property(property="description", type="string", example="Descrição do projeto")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Projeto criado com sucesso"
+     *     )
+     * )
      */
     public function store(ProjectRequest $request)
     {

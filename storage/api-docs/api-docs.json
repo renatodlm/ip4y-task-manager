@@ -1,0 +1,123 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Gerenciamento de Projetos API",
+        "description": "API para gerenciar projetos e tarefas",
+        "contact": {
+            "email": "renatodelimamarques@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Obter todos os projetos",
+                "description": "Retorna todos os projetos registrados",
+                "operationId": "8d4a13ef3fc773ff4031e515460919ea",
+                "responses": {
+                    "200": {
+                        "description": "Lista de projetos retornada com sucesso"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Criar um novo projeto",
+                "description": "Cria um novo projeto",
+                "operationId": "a4dd4c17bf5fc24c224357f03dcc848a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Novo Projeto"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição do projeto"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Projeto criado com sucesso"
+                    }
+                }
+            }
+        },
+        "/api/tasks": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Obter todas as tarefas",
+                "description": "Retorna todas as tarefas registradas",
+                "operationId": "471d938a3bfaeb6fbd981d7c3e2728b0",
+                "responses": {
+                    "200": {
+                        "description": "Lista de tarefas retornada com sucesso"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Criar uma nova tarefa",
+                "description": "Cria uma nova tarefa",
+                "operationId": "f803ebdb2300acdb7e93bbe8d0b9a2e8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Nova Tarefa"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição da tarefa"
+                                    },
+                                    "project_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tarefa criada com sucesso"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Projects",
+            "description": "Projects"
+        },
+        {
+            "name": "Tasks",
+            "description": "Tasks"
+        }
+    ]
+}
